@@ -1,17 +1,20 @@
 import express from 'express'
 import request from 'request-promise'
+import dotenv from 'dotenv'
 
-const PORT = process.env.PORT || 5000;
+dotenv.config()
+
+const PORT = process.env.PORT;
 const app = express();
 
-const apiKey = 'fc1436801f8df41071eba19c51136c57'
+const apiKey = process.env.APIKEY
 const returnScraperApiUrl = `http://api.scraperapi.com?api_key=${apiKey}&autoparse=true`;
 
 app.use(express.json());
 
 // Welcome route
 app.get('/', async (req, res) => {
-    res.send('Welcome to Amazon Scraper API!');
+    res.send('Welcome to Amazon Scraper API! -- COMMANDS (in the URL)-- search/searchProductName -- /products/theProductID -- /products/productID/reviews -- /products/productID/offers');
 });
 
 // Get product details
@@ -26,7 +29,7 @@ app.get('/products/:productId', async (req, res) => {
     } catch (error) {
         res.json(error);
     }
-});
+})
 
 // Get product reviews
 app.get('/products/:productId/reviews', async (req, res) => {
